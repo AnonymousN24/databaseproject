@@ -1,0 +1,35 @@
+Rasul Nazriev
+Project Proposal
+
+
+For this first part of the project, I want you to choose what type of database you will come up with at least 4 different entity types with 8 total instances (perhaps 2 per type). 
+Come up with at least 3 ways to describe each of them (other than a surrogate key). Entities of the same type would have the same categories of description (Actors can be described by First name, last name, etc).
+I would like my database to be about chess, specifically top 1000 or more chess players in the world, tournaments that have the most of them and other interesting facts such as their titles and ratings.
+    • Entity Type: Chess player Sample players: Magnus Carlsen, Hikaru Nakamura
+ This set can be described by:
+1. First and Last Name.
+2. By the title hold (Grandmaster, International Master etc)
+3. By number of tournaments they have won 
+    • Entity Type: Type of tournament Sample tournament: Candidates Tournament
+This set can be described by:
+1. Level of tournament (Elite, amateur etc)
+2. Type of play in the tournament ( Blitz, bullet or standard)
+3. Time for each game in the tournament (1h, 2h, increment or no increment etc)
+    • Entity Type: Tournament location Sample location: Iceland
+this set can be described by:
+1. Country 
+2. City
+3. Specific building
+
+    • Entity Type: Number of players Sample number: 100 
+this set can be described by:
+1. By title (Grandmaster, International Master etc)
+2. By ELO (rating number that ranges from 0 to 3000)
+3. By country (by country the player represents)
+
+Also, come up with 3 questions/use-cases for what you want to look up in the database (e.g. I want to use the database to get history of stocks, I want to be able to get the stats for a particular car when I want, etc)
+
+The questions I would like to ask in accordance with the database are:
+1. What are top 10 tournaments in the year that involve top 100 players of the world?
+2. Who are candidates for the world championship?
+3. What are ELOs of top 100 players? 
