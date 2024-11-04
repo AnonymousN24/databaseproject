@@ -105,7 +105,7 @@ DROP TABLE IF EXISTS `Player`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Player` (
-  `ID` int unsigned NOT NULL,
+  `ID` int unsigned NOT NULL AUTO_INCREMENT,
   `Rating` smallint unsigned DEFAULT NULL,
   `Title` char(2) DEFAULT NULL,
   `Name` varchar(80) DEFAULT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE `Player` (
   PRIMARY KEY (`ID`),
   KEY `CityID` (`CityID`),
   CONSTRAINT `Player_ibfk_1` FOREIGN KEY (`CityID`) REFERENCES `City` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `Player` (
 
 LOCK TABLES `Player` WRITE;
 /*!40000 ALTER TABLE `Player` DISABLE KEYS */;
-INSERT INTO `Player` VALUES (1,2794,'GM','Gukesh Dommaraju',2),(2,2789,'GM','Ding Liren',3),(3,2856,'GM','Magnus Carlsen',9),(4,2856,'GM','Ian Nepomniatchi',11);
+INSERT INTO `Player` VALUES (1,2794,'GM','Gukesh Dommaraju',2),(2,2789,'GM','Ding Liren',3),(3,2856,'GM','Magnus Carlsen',9),(4,2856,'GM','Ian Nepomniatchi',11),(7,2120,'GM','Rasul',2);
 /*!40000 ALTER TABLE `Player` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,4 +220,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-14  4:22:21
+-- Dump completed on 2024-11-04  7:23:01
