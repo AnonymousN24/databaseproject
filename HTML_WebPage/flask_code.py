@@ -64,6 +64,41 @@ def add_player():
     # Render the form to add a new player
     return render_template('add_player.html')
 
+#Route to update a plyer
+@app.route('/update/<int:player_id>', methods=['GET', 'POST'])
+def update_player(player_id):
+    connection = get_db_connection()
+    mycursor = connection.cursor()
+
+    if request.method == 'POST':
+        # Get the updated form data
+        rating = request.form.get('rating')
+        title = request.form.get('title')
+        name = request.form.get('name')
+        city_id = request.form.get('city_id')
+
+        # Update the player in the database
+        sql_update = "UPDATE Player SET Rating = %s, Title = %s, Name = %s, CityID = %s WHERE ID = %s"
+        mycursor.execute(sql_update, (rating, title, name, city_id, player_id))
+        connection.commit()
+
+        mycursor.close()
+        connection.close()
+
+        # Redirect to the table display page after update
+        return redirect(url_for('show_table'))
+
+    # Fetch the player's current data to pre-fill the update form
+    sql_select = "SELECT * FROM Player WHERE ID = %s"
+    mycursor.execute(sql_select, (player_id,))
+    player = mycursor.fetchone()
+
+    mycursor.close()
+    connection.close()
+
+    # Render the update form with the current player data
+    return render_template('update_player.html', player=player)
+
 # Route to delete a player
 @app.route('/delete/<int:player_id>', methods=['POST'])
 def delete_player(player_id):

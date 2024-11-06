@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Player</title>
+</head>
+<body>
+    <h1>Update Player</h1>
+    <form action="{{ url_for('update_player', player_id=player[0]) }}" method="post">
+        <label for="rating">Rating:</label>
+        <input type="text" id="rating" name="rating" value="{{ player[1] }}" required><br>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ player[2] }}" required><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ player[3] }}" required><br>
+
+        <label for="city_id">City ID:</label>
+        <input type="text" id="city_id" name="city_id" value="{{ player[4] }}" required><br>
+
+        <button type="submit">Update</button>
+    </form>
+    <a href="{{ url_for('show_table') }}">Back to Player Table</a>
+</body>
+</html>
