@@ -31,7 +31,7 @@ CREATE TABLE `Candidates_Tournament` (
   PRIMARY KEY (`TournamentID`),
   KEY `CityID` (`CityID`),
   CONSTRAINT `Candidates_Tournament_ibfk_1` FOREIGN KEY (`CityID`) REFERENCES `City` (`ID`),
-  CONSTRAINT `Candidates_Tournament_ibfk_2` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`ID`)
+  CONSTRAINT `Candidates_Tournament_ibfk_2` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`TournamentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,7 +83,7 @@ CREATE TABLE `Game_Time` (
   `TournamentID` int unsigned DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `TournamentID` (`TournamentID`),
-  CONSTRAINT `Game_Time_ibfk_1` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`ID`)
+  CONSTRAINT `Game_Time_ibfk_1` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`TournamentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -113,7 +113,7 @@ CREATE TABLE `Player` (
   PRIMARY KEY (`ID`),
   KEY `CityID` (`CityID`),
   CONSTRAINT `Player_ibfk_1` FOREIGN KEY (`CityID`) REFERENCES `City` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,35 +122,35 @@ CREATE TABLE `Player` (
 
 LOCK TABLES `Player` WRITE;
 /*!40000 ALTER TABLE `Player` DISABLE KEYS */;
-INSERT INTO `Player` VALUES (1,2794,'GM','Gukesh Dommaraju',2),(2,2789,'GM','Ding Liren',3),(3,2856,'GM','Magnus Carlsen',9),(4,2856,'GM','Ian Nepomniatchi',11),(7,2120,'GM','Rasul',2);
+INSERT INTO `Player` VALUES (1,2794,'GM','Gukesh Dommaraju',2),(2,2789,'GM','Ding Liren',3),(3,2856,'GM','Magnus Carlsen',9),(4,2856,'GM','Ian Nepomniatchi',11),(25,2400,'IM','Cool',2);
 /*!40000 ALTER TABLE `Player` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Player_Tournament`
+-- Table structure for table `PlayerTournament`
 --
 
-DROP TABLE IF EXISTS `Player_Tournament`;
+DROP TABLE IF EXISTS `PlayerTournament`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Player_Tournament` (
+CREATE TABLE `PlayerTournament` (
   `PlayerID` int unsigned NOT NULL,
   `TournamentID` int unsigned NOT NULL,
   PRIMARY KEY (`PlayerID`,`TournamentID`),
-  KEY `TournamentID` (`TournamentID`),
-  CONSTRAINT `Player_Tournament_ibfk_1` FOREIGN KEY (`PlayerID`) REFERENCES `Player` (`ID`),
-  CONSTRAINT `Player_Tournament_ibfk_2` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`ID`)
+  KEY `fk_tournament` (`TournamentID`),
+  CONSTRAINT `fk_player` FOREIGN KEY (`PlayerID`) REFERENCES `Player` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `fk_tournament` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`TournamentID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Player_Tournament`
+-- Dumping data for table `PlayerTournament`
 --
 
-LOCK TABLES `Player_Tournament` WRITE;
-/*!40000 ALTER TABLE `Player_Tournament` DISABLE KEYS */;
-INSERT INTO `Player_Tournament` VALUES (1,1),(1,2),(2,2),(3,3),(4,3);
-/*!40000 ALTER TABLE `Player_Tournament` ENABLE KEYS */;
+LOCK TABLES `PlayerTournament` WRITE;
+/*!40000 ALTER TABLE `PlayerTournament` DISABLE KEYS */;
+INSERT INTO `PlayerTournament` VALUES (1,1),(2,1),(1,2),(2,2),(1,3),(3,3),(4,3);
+/*!40000 ALTER TABLE `PlayerTournament` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -161,12 +161,12 @@ DROP TABLE IF EXISTS `Tournament`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Tournament` (
-  `ID` int unsigned NOT NULL,
+  `TournamentID` int unsigned NOT NULL,
   `Type` varchar(60) DEFAULT NULL,
   `NumParticipants` smallint unsigned DEFAULT NULL,
   `CityID` int unsigned DEFAULT NULL,
   `Commentator` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
+  PRIMARY KEY (`TournamentID`),
   KEY `CityID` (`CityID`),
   CONSTRAINT `Tournament_ibfk_1` FOREIGN KEY (`CityID`) REFERENCES `City` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -178,7 +178,7 @@ CREATE TABLE `Tournament` (
 
 LOCK TABLES `Tournament` WRITE;
 /*!40000 ALTER TABLE `Tournament` DISABLE KEYS */;
-INSERT INTO `Tournament` VALUES (1,'Candidates Tournament',8,1,'Viswanathan Anand'),(2,'World Championship',2,7,NULL),(3,'World Championship',2,8,'Fabiano Caruana'),(4,'Candidates Tournament',8,10,'Fabiano Caruana');
+INSERT INTO `Tournament` VALUES (1,'Candidates Tournament 2022',8,1,'Viswanathan Anand'),(2,'World Championship 2023',2,7,NULL),(3,'World Championship 2021',2,8,'Fabiano Caruana'),(4,'Candidates Tournament 2021',8,10,'Fabiano Caruana');
 /*!40000 ALTER TABLE `Tournament` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,7 +196,7 @@ CREATE TABLE `World_Championship` (
   `Commentator` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`TournamentID`),
   KEY `CityID` (`CityID`),
-  CONSTRAINT `World_Championship_ibfk_1` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`ID`),
+  CONSTRAINT `World_Championship_ibfk_1` FOREIGN KEY (`TournamentID`) REFERENCES `Tournament` (`TournamentID`),
   CONSTRAINT `World_Championship_ibfk_2` FOREIGN KEY (`CityID`) REFERENCES `City` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -220,4 +220,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-04  7:23:01
+-- Dump completed on 2024-11-20 16:46:35

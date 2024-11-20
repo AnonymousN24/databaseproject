@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tournaments</title>
+</head>
+<body>
+    <h1>Tournaments</h1>
+    <a href="{{ url_for('assign_player_to_tournament') }}">Assign Player to Tournament</a>
+    <table border="1">
+        <tr>
+            <th>TournamentID</th>
+            <th>Type</th>
+            <th>NumParticipants</th>
+            <th>CityID</th>
+            <th>Commentator</th>
+            <th>Actions</th>
+        </tr>
+        {% for tournament in tournaments %}
+        <tr>
+            <td>{{ tournament[0] }}</td>
+            <td>{{ tournament[1] }}</td>
+            <td>{{ tournament[2] }}</td>
+            <td>{{ tournament[3] }}</td>
+            <td>{{ tournament[4] }}</td>
+            <td>
+                <a href="{{ url_for('view_tournament_players', tournament_id=tournament[0]) }}">View Players</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('show_table') }}">Back to Player Table</a>
+</body>
+</html>

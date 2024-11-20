@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Player to Tournament</title>
+</head>
+<body>
+    <h1>Assign Player to Tournament</h1>
+    <form action="{{ url_for('assign_player_to_tournament') }}" method="post">
+        <label for="player_id">Player:</label>
+        <select name="player_id" id="player_id" required>
+            <option value="">Select a player</option>
+            {% for player in players %}
+            <option value="{{ player[0] }}">{{ player[1] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="tournament_id">Tournament:</label>
+        <select name="tournament_id" id="tournament_id" required>
+            <option value="">Select a tournament</option>
+            {% for tournament in tournaments %}
+            <option value="{{ tournament[0] }}">{{ tournament[1] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Assign</button>
+    </form>
+    <a href="{{ url_for('show_tournaments') }}">Back to Tournaments</a>
+</body>
+</html>

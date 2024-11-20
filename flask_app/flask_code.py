@@ -118,5 +118,85 @@ def delete_player(player_id):
     flash(f'Player with ID {player_id} has been deleted successfully!', 'success')
     return redirect(url_for('show_table'))
 
+# Route to display tournaments and their associated players
+@app.route('/tournaments', methods=['GET'])
+def show_tournaments():
+    connection = get_db_connection()
+    mycursor = connection.cursor()
+
+    # Fetch all tournaments
+    mycursor.execute("SELECT * FROM Tournament")
+    tournaments = mycursor.fetchall()
+    mycursor.close()
+    connection.close()
+
+    return render_template('tournaments.html', tournaments=tournaments)
+
+# Route to view players associated with a tournament
+@app.route('/tournament/<int:tournament_id>', methods=['GET'])
+def view_tournament_players(tournament_id):
+    connection = get_db_connection()
+    mycursor = connection.cursor()
+
+    # Fetch the tournament details
+    mycursor.execute("SELECT * FROM Tournament WHERE TournamentID = %s", (tournament_id,))
+    tournament = mycursor.fetchone()
+
+    # Fetch players associated with the tournament
+    mycursor.execute("""
+        SELECT Player.ID, Player.Name, Player.Rating, Player.Title, Player.CityID
+        FROM PlayerTournament
+        JOIN Player ON PlayerTournament.PlayerID = Player.ID
+        WHERE PlayerTournament.TournamentID = %s
+    """, (tournament_id,))
+    players = mycursor.fetchall()
+    mycursor.close()
+    connection.close()
+
+    return render_template('tournament_players.html', tournament=tournament, players=players)
+
+# Route to assign a player to a tournament
+@app.route('/assign', methods=['GET', 'POST'])
+def assign_player_to_tournament():
+    connection = get_db_connection()
+    mycursor = connection.cursor()
+
+    if request.method == 'POST':
+        player_id = request.form.get('player_id')
+        tournament_id = request.form.get('tournament_id')
+
+        if not (player_id and tournament_id):
+            return "Please select both a player and a tournament."
+
+        # Insert into PlayerTournament
+        sql_insert = "INSERT INTO PlayerTournament (PlayerID, TournamentID) VALUES (%s, %s)"
+        try:
+            mycursor.execute(sql_insert, (player_id, tournament_id))
+            connection.commit()
+        except mysql.connector.Error as err:
+            return f"Player is already in the tournament!"
+        finally:
+            mycursor.close()
+            connection.close()
+
+        flash('Player assigned to tournament successfully!', 'success')
+        return redirect(url_for('show_tournaments'))
+
+    # Fetch players and tournaments for dropdown options
+    mycursor.execute("SELECT ID, Name FROM Player")
+    players = mycursor.fetchall()
+
+    mycursor.execute("SELECT TournamentID, Type FROM Tournament")
+    tournaments = mycursor.fetchall()
+
+    mycursor.close()
+    connection.close()
+
+    return render_template('assign_player.html', players=players, tournaments=tournaments)
+
+
+
+
+
 if __name__ == '__main__':
     app.run(port=8000, debug=True, host="0.0.0.0")

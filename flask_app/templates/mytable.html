@@ -7,6 +7,14 @@
 <body>
     <h1>Player List</h1>
 
+    <!-- Navigation links -->
+    <nav>
+        <a href="{{ url_for('show_table') }}">Player List</a> |
+        <a href="{{ url_for('show_tournaments') }}">Tournament List</a> |
+        <a href="{{ url_for('assign_player_to_tournament') }}">Assign Player to Tournament</a>
+    </nav>
+    <hr>
+
     <!-- Display flash messages -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -18,6 +26,7 @@
         {% endif %}
     {% endwith %}
 
+    <!-- Player table -->
     <table border="1">
         <tr>
             <th>ID</th>
@@ -36,7 +45,7 @@
             <td>{{ player[4] }}</td>
             <td>
                 <a href="{{ url_for('update_player', player_id=player[0]) }}"><button>Update</button></a>
-                <form action="{{ url_for('delete_player', player_id=player[0]) }}" method="post">
+                <form action="{{ url_for('delete_player', player_id=player[0]) }}" method="post" style="display:inline;">
                     <button type="submit">Delete</button>
                 </form>
             </td>
@@ -44,21 +53,7 @@
         {% endfor %}
     </table>
 
-    <h2>Add a New Player</h2>
-    <form action="{{ url_for('add_player') }}" method="post">
-        <label for="rating">Rating:</label>
-        <input type="text" name="rating" id="rating" required>
-        <br>
-        <label for="title">Title:</label>
-        <input type="text" name="title" id="title" required>
-        <br>
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" required>
-        <br>
-        <label for="city_id">City ID:</label>
-        <input type="text" name="city_id" id="city_id" required>
-        <br>
-        <button type="submit">Add Player</button>
-    </form>
+    <br>
+    <a href="{{ url_for('add_player') }}">Add New Player</a>
 </body>
 </html>
