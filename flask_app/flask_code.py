@@ -182,7 +182,7 @@ def assign_player_to_tournament():
         flash('Player assigned to tournament successfully!', 'success')
         return redirect(url_for('show_tournaments'))
 
-    # Fetch players and tournaments for dropdown options
+    # Fetch players and toPlayer assigned to tournament successfully!urnaments for dropdown options
     mycursor.execute("SELECT ID, Name FROM Player")
     players = mycursor.fetchall()
 
@@ -194,6 +194,28 @@ def assign_player_to_tournament():
 
     return render_template('assign_player.html', players=players, tournaments=tournaments)
 
+
+@app.route('/remove_player/<int:tournament_id>/<int:player_id>', methods=['POST'])
+def remove_player_from_tournament(tournament_id, player_id):
+    """Remove a player from a specific tournament."""
+    connection = get_db_connection()
+    mycursor = connection.cursor()
+
+    try:
+        # Delete the entry from the PlayerTournament table
+        sql_delete = "DELETE FROM PlayerTournament WHERE TournamentID = %s AND PlayerID = %s"
+        mycursor.execute(sql_delete, (tournament_id, player_id))
+        connection.commit()
+
+        flash(f"Player {player_id} successfully removed from Tournament {tournament_id}.", "success")
+    except Exception as e:
+        flash(f"Error removing player: {e}", "danger")
+    finally:
+        mycursor.close()
+        connection.close()
+
+    # Redirect back to the tournament's player list
+    return redirect(url_for('view_tournament_players', tournament_id=tournament_id))
 
 
 
